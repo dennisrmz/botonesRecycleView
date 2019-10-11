@@ -7,19 +7,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.botenesrecycleview.models.Pupusa
+import com.example.botenesrecycleview.models.Relleno
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
-    var pupusas: MutableList<Pupusa> = ArrayList()
-    lateinit var context:Context
+class RecyclerAdapter(var pupusas: MutableList<Relleno>, listener: ViewHolderListener ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
-    fun RecyclerAdapter(pupusas: MutableList<Pupusa>, context: Context){
-        this.pupusas = pupusas
-        this.context = context
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ViewHolder(layoutInflater.inflate(R.layout.item_button_list, parent, false))
+        return ViewHolder(layoutInflater.inflate(R.layout.item_button_list, parent, false), listener)
     }
 
     override fun getItemCount(): Int {
@@ -28,7 +22,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = pupusas.get(position)
-        holder.bind(item, context)
+        holder.bind(item)
     }
 
 
@@ -39,16 +33,20 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>(){
 
 
 
-        fun bind(pupusa: Pupusa,    context: Context){
-            rellenoPupusaArroz.text = pupusa.pupusa
-            rellenoPupusaMaiz.text = pupusa.pupusa
+        fun bind(pupusa: Relleno){
+            rellenoPupusaArroz.text = pupusa.nombre
+            rellenoPupusaMaiz.text = pupusa.nombre
             rellenoPupusaArroz.setOnClickListener {
                 pupusa.cantidadArroz += 1
-                Toast.makeText(context," ${pupusa.pupusa}${pupusa.cantidadArroz}", Toast.LENGTH_SHORT).show() }
+                Toast.makeText(itemView.context," ${pupusa.nombre}${pupusa.cantidadArroz}", Toast.LENGTH_SHORT).show() }
             rellenoPupusaMaiz.setOnClickListener {
                 pupusa.cantidadMaiz += 1
-                Toast.makeText(context," ${pupusa.pupusa}${pupusa.cantidadMaiz}", Toast.LENGTH_SHORT).show() }
+                Toast.makeText(itemView.context," ${pupusa.nombre}${pupusa.cantidadMaiz}", Toast.LENGTH_SHORT).show() }
         }
+    }
+
+    class ViewHolderListener {
+
     }
 
 }
